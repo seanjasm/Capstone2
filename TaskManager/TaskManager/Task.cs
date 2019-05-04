@@ -26,9 +26,16 @@ namespace TaskManager
         }
                
 
-        public Task AddOrEdit(bool edit = false)
+        public static Task AddOrEdit(Task task, bool edit = false)
         {
-            string name = "name";
+            string name = "name", newDescription, newDueDate;
+            
+            if (task == null)
+            {
+                task = new Task();
+            }
+            List<Member> newMembers = new List<Member>();
+            newMembers = task.memberList;
 
             while (name != string.Empty)
             {
@@ -37,30 +44,31 @@ namespace TaskManager
                 name = Console.ReadLine();
                 if (name != string.Empty)
                 {
-                    memberList.Add(new Member(name));
+                    newMembers.Add(new Member(name));
                 }
             }
             if (edit)
             {
-                string newDescription = UserInput.GetUserInput("Press Enter to keep old descrpition: ", false);
-                string newDueDate = UserInput.GetUserInputAsDate("Press Enter to keep old deadline: ", false);
+                newDescription = UserInput.GetUserInput("Press Enter to keep old descrpition: ", false);
+                newDueDate = UserInput.GetUserInputAsDate("Press Enter to keep old deadline: ", false);
 
                 if (newDueDate != string.Empty)
                 {
-                    dueDate = newDueDate;
+                    task.dueDate = newDueDate;
                 }
 
                 if (newDescription != string.Empty)
                 {
-                    description = newDescription;
+                    task.description = newDescription;
                 }
             }
             else
             {
-                description = UserInput.GetUserInput("Description: ");
-                dueDate = UserInput.GetUserInputAsDate("Deadline: ");
+                newDescription = UserInput.GetUserInput("Description: ");
+                newDueDate = UserInput.GetUserInputAsDate("Deadline: ");
+                return new Task(newDescription, newDueDate, newMembers);
             }
-            return this;
+            return task;
 
         }
 
@@ -72,7 +80,7 @@ namespace TaskManager
 
         public void DisplayTask(int index = -1)
         {
-            Console.WriteLine($"\n\nTask Owners:({memberList.Count}) \n");
+            Console.WriteLine($"\n\nTask Members:({memberList.Count}) \n");
 
             foreach (Member member in memberList)
             {

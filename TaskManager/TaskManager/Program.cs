@@ -10,9 +10,8 @@ namespace TaskManager
             List<Task> taskList = new List<Task>();
             bool repeat = true;
             taskList = TestData();
-            bool quit = false;
 
-            while (repeat && !quit)
+            while (repeat)
             {
                 try
                 {
@@ -21,12 +20,14 @@ namespace TaskManager
                         case 1:
                             Console.Clear();
                             DisplayAllTasks(taskList);
+                            Pause();
 
                             break;
 
                         case 2:
-                            taskList.Add(new Task().AddOrEdit());
+                            taskList.Add(Task.AddOrEdit(null));
                             UserInput.Display("New task added!");
+                            Pause();
 
                             break;
 
@@ -35,48 +36,38 @@ namespace TaskManager
                             {
                                 UserInput.Display("\nDeleted!\n\n");
                             }
+                            Pause();
 
                             break;
 
                         case 4:
                             MarkTaskAsComplete(taskList);
+                            Pause();
 
                             break;
 
                         case 5:
                             Console.Clear();
-                            int selectedOption = AdvancedOptionMenu();
-
-                            if (selectedOption == 1)
+                            while (repeat)
                             {
-                                DisplayTasksByOwnerName(taskList);
-                            }
-                            else if (selectedOption == 2)
-                            {
-                                DisplayAllTaskBeforeDate(taskList);
-                            }
-                            else
-                            {
-                                Task selectedTask = GetSelectedTaskFromUser(taskList, 
-                                    "Enter Task# to edit: ");
-
-                                selectedTask.DisplayTask();
-
-                                if(UserInput.UserConfirmationPrompt("Are you sure(Y/N)"))
+                                int selectedOption = AdvancedOptionMenu();
+                                //if user exit advanced option repeat equals false
+                                repeat = PerformAdvancedTask(selectedOption, taskList);
+                                if(repeat)
                                 {
-                                    selectedTask.AddOrEdit(true);
-                                    UserInput.Display("Updated!");
-                                }
-                                else
-                                {
-                                    UserInput.Display("Cancelled by user.");
+                                    Pause();
                                 }
                             }
-
+                            repeat = true;//Set back to true for main menu
+                            
+                            
                             break;
 
                         case 6:
-                            quit = true;
+                            if (UserInput.UserConfirmationPrompt("Are you sure(Y/N)?"))
+                            {
+                                repeat = false;
+                            }
                             break;
                         default:
                             break;
@@ -87,12 +78,55 @@ namespace TaskManager
                     UserInput.Display("That record does not exists. " +
                         "Use option 1 to view the list of tasks");
                 }
-                if (!quit)
-                {
-                    repeat = UserInput.UserConfirmationPrompt("Continue(Y/N)? ");
-                }
             }//while
             UserInput.Display("Goodbye!\n");
+        }
+
+        private static bool PerformAdvancedTask(int selectedOption, List<Task> taskList)
+        {
+            if (selectedOption == 1)
+            {
+                DisplayTasksByOwnerName(taskList);
+            }
+            else if (selectedOption == 2)
+            {
+                DisplayAllTaskBeforeDate(taskList);
+            }
+            else if(selectedOption == 3)
+            {
+                try
+                {
+                    Task selectedTask = GetSelectedTaskFromUser(taskList,
+                        "Enter Task# to edit: ");
+
+                    selectedTask.DisplayTask();
+
+                    if (UserInput.UserConfirmationPrompt("Are you sure(Y/N)"))
+                    {
+                        selectedTask = Task.AddOrEdit(selectedTask, true);
+                        UserInput.Display("Updated!");
+                    }
+                    else
+                    {
+                        UserInput.Display("Cancelled by user.");
+                    }
+                }
+                catch(Exception)
+                {
+                    UserInput.Display("Item does not exists!");
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static void Pause()
+        {
+            UserInput.Display("Press any key to continue.......");
+            Console.ReadKey();
         }
 
         private static void DisplayAllTaskBeforeDate(List<Task> taskList)
@@ -115,7 +149,7 @@ namespace TaskManager
 
         private static void DisplayTasksByOwnerName(List<Task> taskList)
         {
-            List<Task> employeeTasks = FindEmployeeTasks(taskList,
+            List<Task> employeeTasks = FindMemberTasks(taskList,
                                                 UserInput.GetUserInput("Enter some or all of employees name: "));
 
             if (employeeTasks.Count > 0)
@@ -165,20 +199,21 @@ namespace TaskManager
             Console.Clear();
             //Extra challenges
             UserInput.Display(" ADVANCED OPTION MENU");
-            UserInput.Display("\t1..... Search by Employee");
+            UserInput.Display("\t1..... Search by member");
             UserInput.Display("\t2..... Search by date");
             UserInput.Display("\t3..... Edit Task");
+            UserInput.Display("\t4..... Go Back to Main");
 
-            int input = UserInput.GetUserInputAsInteger("Select an advanced option(1-3):  ");
+            int input = UserInput.GetUserInputAsInteger("Select an advanced option(1-4):  ");
 
-            if(input > 0 && input < 4)
+            if(input > 0 && input < 5)
             {
                 return input;
             }
             return AdvancedOptionMenu();
         }
 
-        private static List<Task> FindEmployeeTasks(List<Task> list, string name)
+        private static List<Task> FindMemberTasks(List<Task> list, string name)
         {
             return list.FindAll(x => x.memberList.Exists(y => 
                                 y.name.ToLower().Contains(name.ToLower())));
