@@ -1,0 +1,11 @@
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\bin\Debug\netcoreapp2.1\TaskManager.deps.json
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\bin\Debug\netcoreapp2.1\TaskManager.runtimeconfig.json
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\bin\Debug\netcoreapp2.1\TaskManager.runtimeconfig.dev.json
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\bin\Debug\netcoreapp2.1\TaskManager.dll
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\bin\Debug\netcoreapp2.1\TaskManager.pdb
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\obj\Debug\netcoreapp2.1\TaskManager.csprojAssemblyReference.cache
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\obj\Debug\netcoreapp2.1\TaskManager.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\obj\Debug\netcoreapp2.1\TaskManager.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\obj\Debug\netcoreapp2.1\TaskManager.AssemblyInfo.cs
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\obj\Debug\netcoreapp2.1\TaskManager.dll
+C:\Users\User\source\repos\Week2\Capstone2\TaskManager\TaskManager\obj\Debug\netcoreapp2.1\TaskManager.pdb
